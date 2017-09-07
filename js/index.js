@@ -116,14 +116,12 @@ function beginBrain(data, isError, first = true) {
         this.countAll = data.length;
 
         for (var i = 0; i < data.length; i++) {
-          if (~data[i].City.indexOf(message)) {
-            if (data[i].City !== '') {
-              this.countSearch++;
-              query_array[i] = {
-                'city': data[i].City,
-                'key': this.countSearch,
-              };
-            }
+          if (~data[i].City.indexOf(message) && data[i].City !== '') {
+            this.countSearch++;
+            query_array[i] = {
+              'city': data[i].City,
+              'key': this.countSearch,
+            };
           }
           
           /*
@@ -171,7 +169,7 @@ function beginBrain(data, isError, first = true) {
         this.visible = !this.visible;
       },
       closeVisible: function() {
-          this.visible = false;
+        this.visible = false;
       },
       openItems: function() {
         if (!this.visible) {
@@ -187,7 +185,7 @@ function beginBrain(data, isError, first = true) {
  * Навигация по всплывающему списку найденных элементов
  */
 function navigation(button) {
-  if (button == 'click') {return true;}
+  if (button == 'click' || button.key == 'Backspace') {return true;}
 
   var wrapdiv = $('.itemSearch ul.items')[0];
   var prevItem = $Prev('.itemSearch ul.items .active');
@@ -195,19 +193,15 @@ function navigation(button) {
   var nextItem = $Next('.itemSearch ul.items .active');
   var firstElement = $First('.itemSearch ul.items');
 
-  if (button.key == 'ArrowUp') {
-    if (firstElement.className !== 'active') {
-      wrapdiv.scrollTop = nextItem.offsetTop - 150;
-      removeClass(activeItem, 'active');
-      addClass(prevItem, 'active');
-    }
+  if (button.key == 'ArrowUp' && firstElement.className !== 'active') {
+    wrapdiv.scrollTop = nextItem.offsetTop - 150;
+    removeClass(activeItem, 'active');
+    addClass(prevItem, 'active');
   }
-  if (button.key == 'ArrowDown') {
-    if (nextItem.classList[0] !== 'message') {
-      wrapdiv.scrollTop = nextItem.offsetTop - 150;
-      removeClass(activeItem, 'active');
-      addClass(nextItem, 'active');
-    }
+  if (button.key == 'ArrowDown' && nextItem.classList[0] !== 'message') {
+    wrapdiv.scrollTop = nextItem.offsetTop - 150;
+    removeClass(activeItem, 'active');
+    addClass(nextItem, 'active');
   }
 }
 
