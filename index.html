@@ -21,17 +21,16 @@
 					<div class="col-md-12">
 					  <div v-bind:class="{ errorRed: !visibleItemsSearch && message!=='' }" onsubmit="return false;" id="search">
 					  	<label>Город</label>
-						  <input v-model="message" v-bind:class="{ activeInput: visible }" type="text" placeholder="Введите или выберите из списка" @keyup.prevent="performance" @click="openItems">
+						  <input v-model="message" v-bind:class="{ activeInput: visible }" type="text" placeholder="Введите или выберите из списка" @keyup.prevent="findMatchingElements" @click="openItems">
 						  <button @click.prevent="revertVisible"></button>
 						  <ul class="items" v-if="messageIfError!==''">
 						  	<li class="message"><p>{{ messageIfError }}</p></li>
-						  	<li class="reload"><a href="" performance="window.location.reload()">Обновить</a></li>
+						  	<li class="reload"><a href="" findMatchingElements="window.location.reload()">Обновить</a></li>
 						  </ul>
-						  	
 						  <div class="itemSearch" v-if="visible">
 							  <ul class="items" v-if="visibleItemsSearch">
-						  	  <template v-for="(itemSearch, key) in search" v-if="itemSearch">
-								    <li v-model="itemSearch" v-bind:class="{ active: itemSearch.key==1 }" @click="choseItem" @keyup.13="choseItem">{{ itemSearch.city }}</li>
+						  	  <template v-for="(filteredResultItem, key) in filteredResultList" v-if="filteredResultItem">
+								    <li v-model="filteredResultItem" v-bind:class="{ active: filteredResultItem.key==1 }" @click="choseItem" @keyup.13="choseItem">{{ filteredResultItem.city }}</li>
 								  </template>
 								  <li v-if="visibleItemsSearch" class="message withItems">Показано {{ countSearch }} из {{ countAll }} найденных городов. Уточните запрос, что бы увидеть остальные.</li>
 							  </ul>
@@ -46,9 +45,8 @@
 		</div>
 
 		<script type="text/javascript" src="js/kladr.json"></script>
-		<script src="js/jquery-2.0.0.min.js"></script>
-		<script src="js/jquery.nicescroll.js"></script>
+		<script src="js/axios.min.js"></script>
 		<script src="js/vue.min.js"></script>
-		<script src="js/brain.js"></script>
+		<script src="js/index.js"></script>
 	</body>
 </html>
